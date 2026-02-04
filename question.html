@@ -13,7 +13,6 @@
       background: red;
       padding-top: 80px;
       margin: 0;
-      overflow: hidden;
     }
 
     button {
@@ -97,10 +96,19 @@
           my love ❤️
         </p>
 
-        <img src="fafa1.mov" width="300" style="margin-top:20px; border-radius:12px;">
-        <img src="fafa3.mov" width="300" style="margin-top:20px; border-radius:12px;">
-        <img src="fafa2.mp4" width="300" style="margin-top:20px; border-radius:12px;">
+        <div id="videos">
+  <video class="video-like-image" autoplay muted loop playsinline>
+    <source src="media/FAFA1.mp4" type="video/mp4">
+  </video>
 
+  <video class="video-like-image" autoplay muted loop playsinline>
+    <source src="media/fafa3.mp4" type="video/mp4">
+  </video>
+
+  <video class="video-like-image" autoplay muted loop playsinline>
+    <source src="media/fafa2.mp4" type="video/mp4">
+  </video>
+</div>
 
         <canvas id="confetti-canvas"
           style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none;">
