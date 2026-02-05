@@ -1,26 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>The Question</title>
+  <title>Very Important Question</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
   <style>
     body {
+      margin: 0;
+      height: 100vh;
+      background: pink;
       font-family: 'Pacifico', cursive;
       text-align: center;
-      background: red;
-      padding-top: 80px;
-      margin: 0;
+      overflow: hidden;
+      color: white;
+    }
+
+    #app {
+      margin-top: 80px;
+      padding: 20px;
     }
 
     button {
-      font-size: 20px;
-      padding: 12px 20px;
-      margin: 10px;
+      font-size: 22px;
+      padding: 12px 24px;
+      margin: 15px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
     }
 
@@ -31,6 +38,7 @@
 
     #no {
       background: white;
+      color: red;
       position: absolute;
     }
 
@@ -38,7 +46,6 @@
       position: fixed;
       top: -10px;
       font-size: 24px;
-      color: pink;
       animation: fall linear forwards;
       pointer-events: none;
     }
@@ -50,7 +57,12 @@
       }
     }
 
-  
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 
@@ -59,81 +71,92 @@
   <div id="app">
     <h1>
       Dear Janice Nutifafa Ahiati <br>
-      Would you do me the honor of being my Valentine? ❤️
+      Will you do me the honor of being my Valentine? ❤️
     </h1>
 
-    <button id="yes" onclick="yesClicked()">YES OF COURSE</button>
-    <button id="no" onmouseover="moveNo()">NO</button>
+    <button id="yes">YES OF COURSE 😛</button>
+    <button id="no">NO</button>
   </div>
 
+  <canvas id="confetti"></canvas>
+
   <script>
-    function moveNo() {
-      const noBtn = document.getElementById("no");
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 50);
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const app = document.getElementById("app");
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // NO BUTTON MOVEMENT
+    function moveNoButton() {
+      const x = Math.random() * (window.innerWidth - 120);
+      const y = Math.random() * (window.innerHeight - 60);
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
     }
 
-   
-    <script>
-<script>
-function yesClicked() {
-  document.body.innerHTML = `
-    <h1>HAHA 😈💖</h1>
-    <p>You are now officially my Valentine 😍</p>
-    <p>No escape. No refunds. 😂</p>
-    <img src="fafa4.JPG" width="300" style="margin-top:20px; border-radius:12px;">
-    <img src="fafa5.JPG" width="300" style="margin-top:20px; border-radius:12px;">
-    <canvas id="confetti-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none;"></canvas>
-  `;
+    noBtn.addEventListener("mouseover", moveNoButton);
+    noBtn.addEventListener("mousemove", moveNoButton);
+    noBtn.addEventListener("touchstart", moveNoButton);
 
-  // Confetti effect
-  const canvas = document.getElementById('confetti-canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  const confetti = [];
-  const colors = ['#ff0a54','#ff477e','#ff7096','#ff85a1','#fbb1b9','#f9bec7'];
-
-  for(let i=0;i<150;i++){
-    confetti.push({
-      x: Math.random()*canvas.width,
-      y: Math.random()*canvas.height - canvas.height,
-      r: Math.random()*6+4,
-      d: Math.random()*150,
-      color: colors[Math.floor(Math.random()*colors.length)],
-      tilt: Math.random()*10-10
+    // YES BUTTON
+    yesBtn.addEventListener("click", () => {
+      app.innerHTML = `
+        <h1>You fw the motion hehe 😉</h1>
+        <p>There's no one else I'd want to spend Valentine's with apart from you, my love ❤️</p>
+        <img src="fafa4.JPG" width="300" style="border.radius:12px;">
+        <img src="fafa5.JPG" width="300" style="border.radius:12px;">
+      `;
+      startConfetti();
+      startHearts();
     });
-  }
 
-  function draw() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    for(let i=0;i<confetti.length;i++){
-      const f = confetti[i];
-      ctx.beginPath();
-      ctx.moveTo(f.x+f.tilt,f.y);
-      ctx.lineTo(f.x+f.tilt+f.r/2,f.y+f.r);
-      ctx.strokeStyle = f.color;
-      ctx.lineWidth = f.r/2;
-      ctx.stroke();
+    // CONFETTI
+    let confetti = [];
+
+    function startConfetti() {
+      confetti = [];
+      for (let i = 0; i < 150; i++) {
+        confetti.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 6 + 4,
+          color: ['#ff0a54','#ff477e','#ff7096','#ff85a1','#fbb1b9'][Math.floor(Math.random()*5)]
+        });
+      }
+      requestAnimationFrame(drawConfetti);
     }
-    update();
-    requestAnimationFrame(draw);
-  }
 
-  function update(){
-    for(let i=0;i<confetti.length;i++){
-      const f = confetti[i];
-      f.y += (Math.cos(f.d)+3+f.r/2)/2;
-      f.x += Math.sin(f.d);
-      if(f.y > canvas.height){f.y = -10; f.x = Math.random()*canvas.width;}
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confetti.forEach(c => {
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+        ctx.fillStyle = c.color;
+        ctx.fill();
+        c.y += c.r + 2;
+        if (c.y > canvas.height) c.y = -10;
+      });
+      requestAnimationFrame(drawConfetti);
     }
-  }
 
-  draw();
-}
-</script>
+    // FALLING HEARTS
+    function startHearts() {
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 20 + 20 + "px";
+        heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+      }, 300);
+    }
+  </script>
+
 </body>
 </html>
